@@ -1,30 +1,37 @@
 <?php
 
-    //Path to ROOT folder
-    define('SERVER_ROOT','/wamp/www/Task2/');
+    //Path to ROOT folder on Server
+    define('__SERVER_ROOT__',dirname(__FILE__));
 
     //URL to API site ROOT
-    define('SITE_ROOT','localhost/Task2/');
+    define('__SITE_ROOT__','/Task2/app/v1/');
 
-    /*
-     * Loader for Classes - at this time I stick to my own.
-     * I might change it later for PSO standard
-     */
-    function classLoader($className){
-        $class = $className.'.php';
-        if(is_readable($class)){
-            include($class);
-        }
-    }
+    //Symphony classLoader
 
-    //Registering my new ClassLodaer
-    spl_autoload_register(classLoader);
-
-    //This will be the Main Controller
-    require_once('api.php');
-
-    new app\v1\api();
-
-    //Fetching the URI
+    //Fetching the URL
     $uri = $_SERVER['REQUEST_URI'];
-    echo $uri;
+
+    //Removing Path
+    $uri = str_replace(__SITE_ROOT__,'',$uri);
+
+    //Exploding URL
+    $uri = explode('/',rtrim($uri,'/'));
+
+    //Preparing request
+    //Concrete class for endpoint
+    $request['endpoint'] = $uri[0];
+    //Method in concrete class
+    $request['method'] = $uri[1];
+    //Parameters
+    $request['params'] = $uri[2];
+
+    //get Origin for security reasons
+    $origin = $_SERVER['HTTP_ORIGIN'];
+    echo $origin;
+
+    //Instantiate the API
+    try{
+       new api($request,$origin);
+    }catch(Exception $e){
+       echo $e->getMessage();
+    }
