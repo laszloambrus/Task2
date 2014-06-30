@@ -1,6 +1,5 @@
 <?PHP
-namespace app\v1;
-require_once 'wrapi.php';
+namespace v1\systems;
 class api extends wrapi{
     function __construct($request,$origin){
         //Calling parent's Constructor

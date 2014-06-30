@@ -1,5 +1,5 @@
 <?php
-namespace app\v1;
+namespace v1\systems;
 /*
  * Wrapper class for any concrete endpoints
  * 1. Fetches the URL
@@ -38,6 +38,5 @@ abstract class wrapi{
          * Tell the browser about the used methods (POST, GET etc.)
         */
         header("Access-Control-Allow-Methods:POST, GET, PUT, DELETE");
-
     }
 }
