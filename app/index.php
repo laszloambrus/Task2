@@ -34,17 +34,15 @@
 
     //Aliasing the namespaces
     use v1\systems\api;
-    use v1\controllers\user;
+    //use v1\controllers\user;
 
     try{
         //Instantiate the API - testing
         $api = new api($request);
-
         $api->getMethod();
         $api->getEndpoint();
+        $api->checkEndpoint();
 
-        //Instantiate user class - testing
-        $user = new user();
     }catch(Exception $e){
        echo $e->getMessage();
     }

@@ -20,6 +20,7 @@ abstract class wrapi{
     protected $params;
 
     //origin
+    protected $origin;
 
     //This constructor will be called from child classes
     /*
@@ -43,25 +44,15 @@ abstract class wrapi{
             if(array_key_exists('HTTP_ORIGIN',$_SERVER)){
                 $this->origin = $_SERVER['HTTP_ORIGIN'];
             }else{
-                $this->origin = "undifined";
+                //in case the Origin is from the same SERVER
+                $this->origin = $_SERVER['SERVER_NAME'];
             }
 
             //Setting endpoint
             $this->endpoint = array_shift($request);
 
+            //Setting params
+            $this->params = $request;
         }
-
-
-
-    }
-
-    function parseURL(){
-        //Preparing request
-        //Concrete class for endpoint
-        $request['endpoint'] = $uri[0];
-        //Method in concrete class
-        $request['method'] = $uri[1];
-        //Parameters
-        $request['params'] = $uri[2];
     }
 }
