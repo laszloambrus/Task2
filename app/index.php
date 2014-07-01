@@ -29,18 +29,8 @@
     $uri = str_replace(__SITE_ROOT__,'',$uri);
 
     //Exploding URL
-    $uri = explode('/',rtrim($uri,'/'));
+    $request = explode('/',rtrim($uri,'/'));
 
-    //Preparing request
-    //Concrete class for endpoint
-    $request['endpoint'] = $uri[0];
-    //Method in concrete class
-    $request['method'] = $uri[1];
-    //Parameters
-    $request['params'] = $uri[2];
-
-    //Get Origin for security reasons
-    $origin = $_SERVER['HTTP_ORIGIN'];
 
     //Aliasing the namespaces
     use v1\systems\api;
@@ -48,7 +38,11 @@
 
     try{
         //Instantiate the API - testing
-        $api = new api($request,$origin);
+        $api = new api($request);
+
+        $api->getMethod();
+        $api->getEndpoint();
+
         //Instantiate user class - testing
         $user = new user();
     }catch(Exception $e){
