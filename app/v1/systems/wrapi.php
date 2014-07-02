@@ -10,7 +10,8 @@ namespace v1\systems;
  * */
 
 abstract class wrapi{
-    //The HTTP method (GET, POST, PUT, or DELETE)
+    /*The HTTP method (GET, POST, PUT, or DELETE) -
+    it comes from the query string method variable */
     protected $method;
 
     //The model requested eg.:user
@@ -38,7 +39,13 @@ abstract class wrapi{
             //Tell the browser about the used methods (POST, GET etc.)
             header("Access-Control-Allow-Methods:POST, GET, PUT, DELETE");
 
-            $this->method = $_SERVER['REQUEST_METHOD'];
+            /*
+                This was the original idea, but because not every browser
+                supports every method I'll use the query string instead
+                passing methods as a variable after Query string
+            */
+            //$this->method = $_SERVER['REQUEST_METHOD'];
+
 
             //Get Origin for security reasons
             if(array_key_exists('HTTP_ORIGIN',$_SERVER)){
@@ -48,11 +55,38 @@ abstract class wrapi{
                 $this->origin = $_SERVER['SERVER_NAME'];
             }
 
-            //Setting endpoint
-            $this->endpoint = array_shift($request);
+            //Setting endpoint - cutting off query string
+            if($_SERVER['QUERY_STRING']){
+                $this->endpoint =  strstr($request, '?', true);
+                //$this->endpoint = array_shift(strstr()$request);
+            }else{
+                $this->endpoint = $request;
+            }
 
-            //Setting params
-            $this->params = $request;
+            //Getting params
+            if($qs = $_SERVER['QUERY_STRING']){
+                //Separating parameters (variable = value)
+                $parameters = explode('&',$qs);
+                foreach($parameters as $key => $pairs){
+                    $p = explode('=',$pairs);
+                    //Variable and Value
+                    if($p[1]){
+                        $param[$p[0]] = $p[1];
+                    }
+                }
+
+                //Setting method
+                if(is_array($param)){
+                    if(array_key_exists('method',$param)){
+                        $validMethods = array('POST','GET','PUT','DELETE');
+                        if(in_array(strtoupper($param['method']),$validMethods)){
+                            $this->method = $param['method'];
+                        }else{
+                            echo 'Not valid method: '.$param['method'];
+                        }
+                    }
+                }
+            }
         }
     }
 }

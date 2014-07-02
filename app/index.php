@@ -29,7 +29,7 @@
     $uri = str_replace(__SITE_ROOT__,'',$uri);
 
     //Exploding URL
-    $request = explode('/',rtrim($uri,'/'));
+    //$request = explode('/',rtrim($uri,'/'));
 
 
     //Aliasing the namespaces
@@ -38,10 +38,10 @@
 
     try{
         //Instantiate the API - testing
-        $api = new api($request);
-        $api->getMethod();
-        $api->getEndpoint();
-        $api->checkEndpoint();
+        $api = new api($uri);
+        echo $api->getMethod();
+        echo $api->getEndpoint();
+        echo $api->checkEndpoint();
 
     }catch(Exception $e){
        echo $e->getMessage();
