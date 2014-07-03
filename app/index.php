@@ -3,7 +3,7 @@
     define('__SERVER_ROOT__',dirname(__FILE__));
 
     //URL to API site ROOT
-    define('__SITE_ROOT__','/Task2/app/');
+    define('__SITE_ROOT__','/Task2/app/v1');
 
     //Symfony classLoader
     require_once __DIR__.'/vendors/Symfony/Component/ClassLoader/UniversalClassLoader.php';
@@ -16,10 +16,11 @@
 
     //Registering nameSpaces
     $loader->registerNamespaces(array(
-        'v1\systems' => __DIR__ ,
-        'v1\controllers' => __DIR__));
+        'v1\systems' => __DIR__,
+        'v1\controllers' => __DIR__,
+        'v1\models' => __DIR__));
 
-    //Registering the classloader
+    //Registering the Symfony classloader
     $loader->register();
 
     //Fetching the URL
@@ -28,21 +29,14 @@
     //Removing Path from the URL
     $uri = str_replace(__SITE_ROOT__,'',$uri);
 
-    //Exploding URL
-    //$request = explode('/',rtrim($uri,'/'));
-
-
-    //Aliasing the namespaces
-    use v1\systems\api;
-    //use v1\controllers\user;
+    //Aliasing namespaces
+    use \v1\systems\api;
+    use \v1\models\user;
+    use \v1\controllers\userController;
 
     try{
         //Instantiate the API - testing
         $api = new api($uri);
-        echo $api->getMethod();
-        echo $api->getEndpoint();
-        echo $api->checkEndpoint();
-
     }catch(Exception $e){
        echo $e->getMessage();
     }
