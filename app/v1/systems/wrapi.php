@@ -20,6 +20,9 @@ abstract class wrapi{
     //any Additional parameters
     protected $params;
 
+    //Name of controller
+    protected $controller;
+
     //origin
     protected $origin;
 
@@ -58,15 +61,23 @@ abstract class wrapi{
             //Setting endpoint - cutting off query string
             if($_SERVER['QUERY_STRING']){
                 $this->endpoint =  strstr($request, '?', true);
-                //$this->endpoint = array_shift(strstr()$request);
             }else{
-                $this->endpoint = $request;
+                //If no Query String last item is the endpoint
+                $request = explode('/',$request);
+                $this->endpoint = end($request);
+                $this->endpoint = $endpoint;
+            }
+
+            //Setting the name of  the concrete controller
+            if($this->endpoint){
+                $this->controller = $this->endpoint.'Controller';
             }
 
             //Getting params
             if($qs = $_SERVER['QUERY_STRING']){
                 //Separating parameters (variable = value)
                 $parameters = explode('&',$qs);
+
                 foreach($parameters as $key => $pairs){
                     $p = explode('=',$pairs);
                     //Variable and Value
@@ -85,6 +96,11 @@ abstract class wrapi{
                             echo 'Not valid method: '.$param['method'];
                         }
                     }
+                }
+            }else{
+                //No Query string
+                if($this->endpoint){
+                    $this->method = 'get';
                 }
             }
         }
