@@ -5,6 +5,7 @@ class api extends wrapi{
     function __construct($request){
         //Calling parent's Constructor
         parent::__construct($request);
+
         //Check if controller exists
         if($this->checkEndpoint()){
             $class = 'v1\controllers\\'.$this->controller;

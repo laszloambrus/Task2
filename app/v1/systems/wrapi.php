@@ -64,7 +64,7 @@ abstract class wrapi{
             }else{
                 //If no Query String last item is the endpoint
                 $request = explode('/',$request);
-                $this->endpoint = end($request);
+                $endpoint = end($request);
                 $this->endpoint = $endpoint;
             }
 
