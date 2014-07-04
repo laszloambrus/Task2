@@ -49,7 +49,6 @@ abstract class wrapi{
             */
             //$this->method = $_SERVER['REQUEST_METHOD'];
 
-
             //Get Origin for security reasons
             if(array_key_exists('HTTP_ORIGIN',$_SERVER)){
                 $this->origin = $_SERVER['HTTP_ORIGIN'];
@@ -63,9 +62,26 @@ abstract class wrapi{
                 $this->endpoint =  strstr($request, '?', true);
             }else{
                 $request = rtrim($request,'/');
+
                 //If no Query String last item is the endpoint
                 $request = explode('/',$request);
-                $endpoint = end($request);
+
+                //Removing The firt empty element
+                $request = array_slice($request,1);
+
+                //print_r($request);
+
+                //Is there a second item in array?
+                if(count($request)>1){
+                    if(is_numeric($filter = $request[1])){
+                        $this->filter = $filter;
+                    }
+                }
+
+                //The first item is the endpoint
+                $endpoint = array_shift($request);
+
+                //$endpoint = end($request);
                 $this->endpoint = $endpoint;
             }
 
