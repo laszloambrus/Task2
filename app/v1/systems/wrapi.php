@@ -62,6 +62,7 @@ abstract class wrapi{
             if($_SERVER['QUERY_STRING']){
                 $this->endpoint =  strstr($request, '?', true);
             }else{
+                $request = rtrim($request,'/');
                 //If no Query String last item is the endpoint
                 $request = explode('/',$request);
                 $endpoint = end($request);
