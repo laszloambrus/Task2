@@ -20,6 +20,9 @@ abstract class wrapi{
     //any Additional parameters
     protected $params;
 
+    //Filtered data id (eg.: userID)
+    protected $filter;
+
     //Name of controller
     protected $controller;
 

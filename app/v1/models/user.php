@@ -2,11 +2,11 @@
 namespace v1\models;
 class User extends Model{
 
-    function __construct($method){
+    function __construct($method,$filter){
         //Decide what to do according to method
         switch (strtolower($method)){
             case 'get':
-                $this->readUserData();
+                $this->readUserData($filter);
                 $this->getData('json');
                 break;
             default:
@@ -15,7 +15,7 @@ class User extends Model{
         }
     }
 
-    protected function readUserData(){
+    protected function readUserData($filter){
         //Path to user data
         $file = 'v1\data\user\users.csv';
 
@@ -40,8 +40,16 @@ class User extends Model{
                     $data->phone = $line[2];
                     $data->street = $line[3];
 
-                    //Push data in the array using id as index
-                    $this->datas[$line[0]] = $data;
+                    //Check whether data is filtered (eg.: user with an ID)
+                    if($filter){
+                        //Push data in the array using id as index
+                        if($filter == $data->id){
+                            $this->datas[$line[0]] = $data;
+                        }
+                    }else{
+                        //If there is no filtering every data will be stored
+                        $this->datas[$line[0]] = $data;
+                    }
                 }
                 fclose($handle);
             }

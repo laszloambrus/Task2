@@ -10,7 +10,7 @@ class api extends wrapi{
         if($this->checkEndpoint()){
             $class = 'v1\controllers\\'.$this->controller;
             //Instantiate the controller
-            $controller = new $class($this->method);
+            $controller = new $class($this->method,$this->filter);
         }else{
             echo 'controller not found';
         }
